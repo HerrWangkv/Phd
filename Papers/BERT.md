@@ -9,7 +9,7 @@
 
 ## Algorithm
 ### Architecture
-We denote the number of layers (i.e., Transformer blocks) as $L$, the hidden size as $H$ (denoted as $d_{model}$ [here](Transformer.md)) and the number of self-attention heads as $A$. The number of parameters of the architecture is about $30k\times H+L\times H^2\times12$, where $30k$ is the size of the vocabulary.
+Only use Transformer encoders. We denote the number of layers (i.e., Transformer encoder blocks) as $L$, the hidden size as $H$ (denoted as $d_{model}$ [here](Transformer.md)) and the number of self-attention heads as $A$. The number of parameters of the architecture is about $30k\times H+L\times H^2\times12$, where $30k$ is the size of the vocabulary.
 
 ### Input
 - "Sentence": an arbitrary span of contiguous text instead of an actual linguistic sentence
