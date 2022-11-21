@@ -28,7 +28,18 @@ $$MultiHead(\boldsymbol{Q}, \boldsymbol{K}, \boldsymbol{V}) =Concat(\boldsymbol{
 - $Concat(\boldsymbol{head}_1,...,\boldsymbol{head}_h): [n, hd_v=d_{model}]$
 - $\boldsymbol{W^O}: [hd_v=d_{model}, d_{model}]$
 - $MultiHead(\boldsymbol{Q}, \boldsymbol{K}, \boldsymbol{V}): [n, d_{model}]$
-  
+
+## 1.3 Computational complexity of a multi-head self-attention layer ($d_k=d_v:=d$)
+The computational complexity of matrix product between $\boldsymbol{A}$ ($[a,b]$) and $\boldsymbol{B}$ ($[b,c]$) is defined as $\Omega(\boldsymbol{A}\boldsymbol{B})=abc$. And the SoftMax computation is also omitted in determining complexity.
+- For each single head:
+  - Calculate $\boldsymbol{Q}\boldsymbol{W_i^Q}, \boldsymbol{K}\boldsymbol{W_i^K}, \boldsymbol{V}\boldsymbol{W_i^V}$ from the input $\boldsymbol{Q}, \boldsymbol{K}, \boldsymbol{V}$: $3\times n\times d_{model}\times d=3nd_{model}^2/h$
+  - Calculate the "self-attention matrix" between $\boldsymbol{Q}\boldsymbol{W_i^Q}$ ($[n, d]$) and $\boldsymbol{K}\boldsymbol{W_i^K}$($[n, d]$): $n^2d=n^2d_{model}/h$
+  - Calculate the weighted output of a single head: $n^2d$
+  - So for each single head, the computational complexity is $3nd_{model}^2/h+2n^2d$
+- Project the concatenation to the final output: $nd_{model}^2$
+
+The total computation complexity is:
+$$h\times(3nd_{model}^2/h+2n^2d_{model}/h)+nd_{model}^2=4nd_{model}^2+2n^2d_{model}$$
 # 2 Vanilla Transformer
 ![architecture](Images/transformer_architecture.png)
 ## 2.1 Encoder
@@ -65,3 +76,5 @@ $$PE_{(pos, 2i)}=\sin\left(pos/10000^{2i/d_{model}}\right)\\ PE_{(pos, 2i+1)}=\c
   - recurrent: $O(nd^2)$
 - Larger amount of computation that can be parallelized
 - Easier to learn long-range dependencies
+
+
